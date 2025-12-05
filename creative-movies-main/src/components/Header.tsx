@@ -50,27 +50,27 @@ const Header: React.FC = () => {
   }, [open]);
 
   return (
-    <header className="bg-gray-800">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/" className="flex items-center text-2xl font-bold text-gold">
-          <Film className="mr-2" />
-          MovieMaster
+    <header className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-lg sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <Link to="/" className="flex items-center text-2xl font-bold text-amber-500 hover:text-amber-400 transition-colors">
+          <Film className="mr-2" size={28} />
+          <span>MovieMaster</span>
         </Link>
 
-        {/* Desktop nav: hidden until xl so compact hamburger is shown on desktop too */}
-        <nav className="hidden xl:flex items-center space-x-6">
-          <Link to="/" className="hover:text-gold transition-colors">Home</Link>
-          <Link to="/watchlist" className="hover:text-gold transition-colors">Watchlist</Link>
-          <Link to="/profile" className="hover:text-gold transition-colors">Profile</Link>
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center space-x-8">
+          <Link to="/" className="text-gray-300 hover:text-amber-500 transition-colors font-medium">Home</Link>
+          <Link to="/watchlist" className="text-gray-300 hover:text-amber-500 transition-colors font-medium">Watchlist</Link>
+          <Link to="/profile" className="text-gray-300 hover:text-amber-500 transition-colors font-medium">Profile</Link>
         </nav>
 
         {/* Mobile hamburger */}
-        <div className="block">
+        <div className="md:hidden">
           <button
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="p-2 rounded-md text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gold"
+            className="p-2 rounded-lg text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
           >
             {open ? <CloseIcon /> : <MenuIcon />}
           </button>

@@ -24,6 +24,29 @@ const HomePage: React.FC = () => {
     return ()=> clearTimeout(t);
   },[])
 
+  useEffect(()=>{
+    // hydrate last search and page from localStorage if present
+    try{
+      const lastQ = localStorage.getItem('lastSearchQuery');
+      const lastP = localStorage.getItem('lastPage');
+      if (lastQ) {
+        setLastQuery(lastQ);
+        const p = lastP ? parseInt(lastP,10) : 1;
+        setPage(p);
+        // trigger a search to populate UI
+        (async ()=>{
+          setLoading(true);
+          try{
+            const { results, total_pages } = await searchMovies(lastQ, p);
+            setMovies(results);
+            setTotalPages(total_pages);
+          }catch(e){ /* ignore */ }
+          setLoading(false);
+        })();
+      }
+    }catch{}
+  },[])
+
   const handleSearch = async (query: string) => {
     setError(null);
     setLoading(true);
@@ -46,6 +69,7 @@ const HomePage: React.FC = () => {
 
   const onPageChange = async (p: number) => {
     setPage(p);
+    try{ localStorage.setItem('lastPage', String(p)); }catch{}
     if (!lastQuery) return;
     setLoading(true);
     try{
@@ -58,8 +82,16 @@ const HomePage: React.FC = () => {
   return (
     <div className="space-y-8">
       <TrendingCarousel />
-      <SearchBar onSearch={handleSearch} />
-      <UserPreferences onUpdate={handlePreferencesUpdate} />
+
+      <div className="page-header">
+        <h1 className="page-title">Movie Recommendations</h1>
+        <div className="search-row">
+          <SearchBar onSearch={handleSearch} />
+        </div>
+        <div className="tags-row">
+          <UserPreferences onUpdate={handlePreferencesUpdate} />
+        </div>
+      </div>
       
       {loading ? (
         <div className="py-6"><LoadingSpinner label="Loading content" /></div>
@@ -68,7 +100,7 @@ const HomePage: React.FC = () => {
       ) : movies.length > 0 && (
         <section>
           <h2 className="text-2xl font-bold mb-4">Search Results</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="movies-grid">
             {movies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
@@ -80,7 +112,7 @@ const HomePage: React.FC = () => {
       {recommendedMovies.length > 0 && (
         <section>
           <h2 className="text-2xl font-bold mb-4">Recommended Movies</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="movies-grid">
             {recommendedMovies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}

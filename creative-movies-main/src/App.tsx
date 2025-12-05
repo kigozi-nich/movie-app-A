@@ -6,15 +6,16 @@ import HomePage from './pages/HomePage';
 import MovieDetailsPage from './pages/MovieDetailsPage';
 import WatchlistPage from './pages/WatchlistPage';
 import Footer from './components/Footer';
+import './App.css';
 
 import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-900 text-white">
+      <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="container mx-auto px-4 py-8">
+        <main className="flex-1 container mx-auto px-4 py-6">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/movie/:id" element={<MovieDetailsPage />} />

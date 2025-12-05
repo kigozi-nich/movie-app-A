@@ -8,8 +8,12 @@ const mapMovieData = (data: any): Movie => ({
   id: data.id,
   title: data.title || data.name,
   poster_path: data.poster_path,
-  vote_average: data.vote_average ?? data.vote_average,
+  vote_average: typeof data.vote_average !== 'undefined' ? data.vote_average : 0,
   overview: data.overview || data.summary || '',
+  release_date: data.release_date,
+  popularity: data.popularity,
+  original_language: data.original_language,
+  vote_count: data.vote_count,
 });
 
 export const searchMovies = async (query: string, page = 1): Promise<{ results: Movie[]; total_pages: number }> => {

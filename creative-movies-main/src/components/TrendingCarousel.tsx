@@ -27,12 +27,15 @@ const TrendingCarousel: React.FC = () => {
   if (!movies.length) return null;
 
   return (
-    <section className="mb-8">
-      <h2 className="text-2xl font-bold mb-4">Trending This Week</h2>
-      <div className="overflow-x-auto no-scrollbar">
-        <div className="flex space-x-4 pb-2">
+    <section className="mb-10">
+      <h2 className="text-2xl font-bold mb-6 text-white flex items-center">
+        <span className="w-1 h-8 bg-amber-500 rounded mr-3"></span>
+        🔥 Trending This Week
+      </h2>
+      <div className="overflow-x-auto no-scrollbar pb-4">
+        <div className="flex space-x-5">
           {movies.map((m: any) => (
-            <div key={m.id} className="w-48 flex-shrink-0">
+            <div key={m.id} className="w-44 flex-shrink-0">
               <MovieCard movie={m} />
             </div>
           ))}

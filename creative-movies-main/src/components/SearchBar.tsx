@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 
 interface SearchBarProps {
@@ -8,9 +8,18 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState('');
 
+  useEffect(()=>{
+    try{
+      // lazy-load last query from localStorage if present
+      const v = localStorage.getItem('lastSearchQuery');
+      if (v) setQuery(v);
+    }catch{}
+  },[])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch(query);
+    try{ localStorage.setItem('lastSearchQuery', query); }catch{}
   };
 
   return (
@@ -20,7 +29,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search for movies..."
-        className="flex-grow px-4 py-2 rounded-l-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gold"
+        className="flex-grow px-4 py-2 rounded-l-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gold transition-shadow"
       />
       <button
         type="submit"

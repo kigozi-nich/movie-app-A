@@ -7,4 +7,8 @@ export interface Movie {
   runtime?: number;
   genres?: { id: number; name: string }[];
   cast?: string[];
+  release_date?: string;
+  popularity?: number;
+  original_language?: string;
+  vote_count?: number;
 }

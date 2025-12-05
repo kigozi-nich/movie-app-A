@@ -5,7 +5,12 @@ interface UserPreferencesProps {
 }
 
 const UserPreferences: React.FC<UserPreferencesProps> = ({ onUpdate }) => {
-  const [preferences, setPreferences] = useState<string[]>([]);
+  const [preferences, setPreferences] = useState<string[]>(() => {
+    try{
+      const raw = localStorage.getItem('preferredGenres');
+      return raw ? JSON.parse(raw) : [];
+    }catch{ return [] }
+  });
   const genres = ['Action', 'Comedy', 'Drama', 'Sci-Fi', 'Horror', 'Romance'];
 
   const handleToggle = (genre: string) => {
@@ -18,6 +23,7 @@ const UserPreferences: React.FC<UserPreferencesProps> = ({ onUpdate }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    try{ localStorage.setItem('preferredGenres', JSON.stringify(preferences)); }catch{}
     onUpdate(preferences);
   };
 
